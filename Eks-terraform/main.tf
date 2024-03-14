@@ -28,10 +28,10 @@ data "aws_vpc" "Default-2-vpc" {
   }
 }
 #get public subnets for cluster
-data "aws_subnet_ids" "public_subnets" {
+data "aws_subnets" "public_subnets" {
   vpc_id = data.aws_vpc.Default-2-vpc.id
-
 }
+
 #cluster provision
 resource "aws_eks_cluster" "example" {
   name     = "EKS_CLOUD"
