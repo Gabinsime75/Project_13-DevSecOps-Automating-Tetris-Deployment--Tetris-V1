@@ -29,6 +29,7 @@ resource "aws_iam_instance_profile" "example_profile" {
 
 resource "aws_security_group" "Jenkins-sg" {
   name        = "Jenkins-Security Group"
+  vpc_id      = "vpc-07ffaafdeb3ae3740"
   description = "Open 22,443,80,8080,9000"
 
   # Define a single ingress rule to allow traffic on all specified ports
@@ -59,12 +60,15 @@ resource "aws_security_group" "Jenkins-sg" {
 }
 
 resource "aws_instance" "web" {
-  ami                    = "ami-0df4b2961410d4cff"
+  ami                    = "ami-07d9b9ddc6cd8dd30"
   instance_type          = "t2.medium"
-  key_name               = "purplehaze"
+  key_name               = "My-Nova-kp"
   vpc_security_group_ids = [aws_security_group.Jenkins-sg.id]
   user_data              = templatefile("./install_jenkins.sh", {})
   iam_instance_profile   = aws_iam_instance_profile.example_profile.name
+  associate_public_ip_address = true
+  subnet_id              = "subnet-00c4c233b6d4b4a67"
+
 
   tags = {
     Name = "Jenkins-argo"
